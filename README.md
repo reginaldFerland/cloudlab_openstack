@@ -1,6 +1,7 @@
 TEAM MEMBERS:
   1. Reginald Ferland
   2. Cody Stammers
+  3. Cole McKnight
 
 This is an Openstack profile that is based on CloudLab's [default OpenStack profile](https://gitlab.flux.utah.edu/johnsond/openstack-build-ubuntu)
 
