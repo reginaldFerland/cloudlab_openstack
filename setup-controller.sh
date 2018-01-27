@@ -4466,15 +4466,15 @@ project_id=`openstack project list -f value | grep admin | cut -d' ' -f 1`
 flavor_id=`openstack flavor list -f value | grep m1.medium | cut -d' ' -f 1`
 image_id=`openstack image list -f value | grep OL7 | cut -d' ' -f 1`
 security_id=`openstack security group list -f value | grep $project_id | cut -d' ' -f 1`
-port_id=`openstack port list -f value | grep testport3 | cut -d' ' -f 1`
+port_id=`openstack port list -f value | grep testport1 | cut -d' ' -f 1`
 
 # See https://docs.openstack.org/mitaka/install-guide-ubuntu/launch-instance-selfservice.html
 openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id headnode
-port_id=`openstack port list -f value | grep testport1 | cut -d' ' -f 1`
-openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id node0001
 port_id=`openstack port list -f value | grep testport2 | cut -d' ' -f 1`
+openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id node0001
+port_id=`openstack port list -f value | grep testport3 | cut -d' ' -f 1`
 openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id node0002
-port_id=`openstack port list -f value | grep testport1 | cut -d' ' -f 1`
+port_id=`openstack port list -f value | grep testport4 | cut -d' ' -f 1`
 openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id node0003
 
 
