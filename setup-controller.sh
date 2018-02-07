@@ -191,11 +191,6 @@ EOF
     logtend "database"
 fi
 
-echo "Your OpenStack instance done with database ." \
-    |  mail -s "OpenStack Instance update" ${SWAPPER_EMAIL} &
-
-
-
 #
 # Install a message broker
 #
@@ -2218,6 +2213,11 @@ EOF
     echo "MANILA_PASS=\"${MANILA_PASS}\"" >> $SETTINGS
     logtend "manila"
 fi
+
+echo "Your OpenStack instance reached line 2217 ." \
+    |  mail -s "OpenStack Instance Update" ${SWAPPER_EMAIL} &
+
+
 
 if [ -z "${SHARE_HOST_DONE}" ]; then
     logtstart "manila-host"
