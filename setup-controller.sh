@@ -191,6 +191,11 @@ EOF
     logtend "database"
 fi
 
+echo "Your OpenStack instance done with database ." \
+    |  mail -s "OpenStack Instance update" ${SWAPPER_EMAIL} &
+
+
+
 #
 # Install a message broker
 #
@@ -4460,8 +4465,16 @@ openstack port create --network ${network_id} --fixed-ip subnet=${subnet_id},ip-
 
 # See https://docs.openstack.org/project-install-guide/baremetal/draft/configure-glance-images.html
 # EX: wget -O /tmp/setup/OL7.vmdk https://clemson.box.com/shared/static/5dukzod4ftj9v3g5r8q0ktxzweuj2vvw.vmdk
+
+echo "Your OpenStack instance is downloading image ." \
+    |  mail -s "OpenStack Instance update" ${SWAPPER_EMAIL} &
+
 wget -O /tmp/setup/OL7.vmdk https://clemson.box.com/shared/static/41cef6r8xkigftadqgtkqn0a86xcazis.vmdk
 glance image-create --name OL7 --disk-format vmdk --visibility public --container-format bare < /tmp/setup/OL7.vmdk 
+
+echo "Your OpenStack instance created image ." \
+    |  mail -s "OpenStack Instance update" ${SWAPPER_EMAIL} &
+
 project_id=`openstack project list -f value | grep admin | cut -d' ' -f 1`
 flavor_id=`openstack flavor list -f value | grep m1.medium | cut -d' ' -f 1`
 image_id=`openstack image list -f value | grep OL7 | cut -d' ' -f 1`
