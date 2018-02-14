@@ -4457,38 +4457,66 @@ echo "running codes to setup interface ports with fixed IP addresses"
 network_id=`openstack network show -f shell flat-lan-1-net | grep "^id=" | cut -d'"' -f 2`
 subnet_id=`openstack network show -f shell flat-lan-1-net | grep "^subnets=" | cut -d'"' -f 2`
 
-# See https://docs.openstack.org/python-openstackclient/pike/cli/command-objects/port.html
-openstack port create --network ${network_id} --fixed-ip subnet=${subnet_id},ip-address=10.11.10.21 testport1
-openstack port create --network ${network_id} --fixed-ip subnet=${subnet_id},ip-address=10.11.10.22 testport2
-openstack port create --network ${network_id} --fixed-ip subnet=${subnet_id},ip-address=10.11.10.23 testport3
-openstack port create --network ${network_id} --fixed-ip subnet=${subnet_id},ip-address=10.11.10.24 testport4
-
-# See https://docs.openstack.org/project-install-guide/baremetal/draft/configure-glance-images.html
-# EX: wget -O /tmp/setup/OL7.vmdk https://clemson.box.com/shared/static/5dukzod4ftj9v3g5r8q0ktxzweuj2vvw.vmdk
-
 echo "Your OpenStack instance is downloading image ." \
     |  mail -s "OpenStack Instance update" ${SWAPPER_EMAIL} &
 
+# Download images
+# See https://docs.openstack.org/project-install-guide/baremetal/draft/configure-glance-images.html
+#Headnode
 wget -O /tmp/setup/OL7.vmdk https://clemson.box.com/shared/static/41cef6r8xkigftadqgtkqn0a86xcazis.vmdk
 glance image-create --name OL7 --disk-format vmdk --visibility public --container-format bare < /tmp/setup/OL7.vmdk 
 
 echo "Your OpenStack instance created image ." \
     |  mail -s "OpenStack Instance update" ${SWAPPER_EMAIL} &
 
+#Create ports
+# See https://docs.openstack.org/python-openstackclient/pike/cli/command-objects/port.html
+#Headnode
+openstack port create --network ${network_id} --fixed-ip subnet=${subnet_id},ip-address=10.11.10.21 headport
+#Compute Nodes
+openstack port create --network ${network_id} --fixed-ip subnet=${subnet_id},ip-address=10.11.10.22 computeport1
+openstack port create --network ${network_id} --fixed-ip subnet=${subnet_id},ip-address=10.11.10.23 computeport2
+openstack port create --network ${network_id} --fixed-ip subnet=${subnet_id},ip-address=10.11.10.24 computeport3
+#Storage Nodes
+openstack port create --network ${network_id} --fixed-ip subnet=${subnet_id},ip-address=10.11.10.25 storageport1
+openstack port create --network ${network_id} --fixed-ip subnet=${subnet_id},ip-address=10.11.10.26 storageport2
+
+
+# Setup Variables
 project_id=`openstack project list -f value | grep admin | cut -d' ' -f 1`
 flavor_id=`openstack flavor list -f value | grep m1.medium | cut -d' ' -f 1`
-image_id=`openstack image list -f value | grep OL7 | cut -d' ' -f 1`
 security_id=`openstack security group list -f value | grep $project_id | cut -d' ' -f 1`
-port_id=`openstack port list -f value | grep testport1 | cut -d' ' -f 1`
 
+#Image IDs, headnode
+image_id=`openstack image list -f value | grep OL7 | cut -d' ' -f 1`
+
+#Image ports, headnode
+port_id=`openstack port list -f value | grep headport | cut -d' ' -f 1`
+
+#Create instances
 # See https://docs.openstack.org/mitaka/install-guide-ubuntu/launch-instance-selfservice.html
+#headnode
 openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id headnode &
-port_id=`openstack port list -f value | grep testport2 | cut -d' ' -f 1`
+
+#Compute Nodes Instances
+#Image id
+image_id=`openstack image list -f value | grep OL7 | cut -d' ' -f 1`
+
+port_id=`openstack port list -f value | grep computeport1 | cut -d' ' -f 1`
 openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id node0001 &
-port_id=`openstack port list -f value | grep testport3 | cut -d' ' -f 1`
+port_id=`openstack port list -f value | grep computeport2 | cut -d' ' -f 1`
 openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id node0002 &
-port_id=`openstack port list -f value | grep testport4 | cut -d' ' -f 1`
+port_id=`openstack port list -f value | grep computeport3 | cut -d' ' -f 1`
 openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id node0003 &
+
+#Storage Nodes
+#Image id
+image_id=`openstack image list -f value | grep OL7 | cut -d' ' -f 1`
+
+port_id=`openstack port list -f value | grep storageport1 | cut -d' ' -f 1`
+openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id node0001 &
+port_id=`openstack port list -f value | grep storageport1 | cut -d' ' -f 1`
+openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id node0001 &
 
 wait
 
