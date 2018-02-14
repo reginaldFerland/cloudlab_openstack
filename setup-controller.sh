@@ -4466,6 +4466,10 @@ echo "Your OpenStack instance is downloading image ." \
 wget -O /tmp/setup/OL7.vmdk https://clemson.box.com/shared/static/41cef6r8xkigftadqgtkqn0a86xcazis.vmdk
 glance image-create --name OL7 --disk-format vmdk --visibility public --container-format bare < /tmp/setup/OL7.vmdk 
 
+#Compute image
+
+#Storage image
+
 echo "Your OpenStack instance created image ." \
     |  mail -s "OpenStack Instance update" ${SWAPPER_EMAIL} &
 
@@ -4495,7 +4499,7 @@ port_id=`openstack port list -f value | grep headport | cut -d' ' -f 1`
 
 #Create instances
 # See https://docs.openstack.org/mitaka/install-guide-ubuntu/launch-instance-selfservice.html
-#headnode
+#headnode 
 openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id headnode &
 
 #Compute Nodes Instances
@@ -4503,22 +4507,26 @@ openstack server create --flavor m1.medium --security-group $security_id --image
 image_id=`openstack image list -f value | grep OL7 | cut -d' ' -f 1`
 
 port_id=`openstack port list -f value | grep computeport1 | cut -d' ' -f 1`
-openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id node0001 &
+openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id compute001 &
 port_id=`openstack port list -f value | grep computeport2 | cut -d' ' -f 1`
-openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id node0002 &
+openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id compute002 &
 port_id=`openstack port list -f value | grep computeport3 | cut -d' ' -f 1`
-openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id node0003 &
+openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id compute003 &
 
 #Storage Nodes
 #Image id
 image_id=`openstack image list -f value | grep OL7 | cut -d' ' -f 1`
 
 port_id=`openstack port list -f value | grep storageport1 | cut -d' ' -f 1`
-openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id node0001 &
+openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id storage001 &
 port_id=`openstack port list -f value | grep storageport1 | cut -d' ' -f 1`
-openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id node0001 &
+openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id storage001 &
 
 wait
+
+#Add floating Public IP address to headnode
+floating_ip=`openstack floating ip create public`
+
 
 
 echo "***"
