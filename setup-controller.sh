@@ -4519,7 +4519,7 @@ image_id=`openstack image list -f value | grep OL7 | cut -d' ' -f 1`
 
 port_id=`openstack port list -f value | grep storageport1 | cut -d' ' -f 1`
 openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id storage001 &
-port_id=`openstack port list -f value | grep storageport1 | cut -d' ' -f 1`
+port_id=`openstack port list -f value | grep storageport2 | cut -d' ' -f 1`
 openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id storage001 &
 
 wait
