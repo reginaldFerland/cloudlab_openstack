@@ -4495,7 +4495,6 @@ security_id=`openstack security group list -f value | grep $project_id | cut -d'
 
 #Image IDs, headnode
 image_id=`openstack image list -f value | grep Head | cut -d' ' -f 1`
-image_id_compute=`openstack image list -f value | grep OL7 | cut -d' ' -f 1`
 
 #Image ports, headnode
 port_id=`openstack port list -f value | grep headport | cut -d' ' -f 1`
