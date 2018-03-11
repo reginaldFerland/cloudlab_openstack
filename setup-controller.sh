@@ -4463,17 +4463,19 @@ echo "Your OpenStack instance is downloading image ." \
 # Download images
 # See https://docs.openstack.org/project-install-guide/baremetal/draft/configure-glance-images.html
 #Headnode
-wget -O /tmp/setup/OL7.vmdk https://clemson.box.com/shared/static/41cef6r8xkigftadqgtkqn0a86xcazis.vmdk
-glance image-create --name OL7 --disk-format vmdk --visibility public --container-format bare < /tmp/setup/OL7.vmdk 
+wget -O /tmp/setup/Head.vmdk https://clemson.box.com/s/rhw7gytt0t3mjfpk8t46vgkun36vwpos
+glance image-create --name Head --disk-format vmdk --visibility public --container-format bare < /tmp/setup/Head.vmdk 
 
 #Compute image
+wget -O /tmp/setup/OL7.vmdk https://clemson.box.com/shared/static/41cef6r8xkigftadqgtkqn0a86xcazis.vmdk
+glance image-create --name OL7 --disk-format vmdk --visibility public --container-format bare < /tmp/setup/OL7.vmdk 
 
 #Storage image
 
 echo "Your OpenStack instance created image ." \
     |  mail -s "OpenStack Instance update" ${SWAPPER_EMAIL} &
 
-#Create ports
+# Create ports
 # See https://docs.openstack.org/python-openstackclient/pike/cli/command-objects/port.html
 #Headnode
 openstack port create --network ${network_id} --fixed-ip subnet=${subnet_id},ip-address=10.11.10.21 headport
@@ -4492,7 +4494,8 @@ flavor_id=`openstack flavor list -f value | grep m1.medium | cut -d' ' -f 1`
 security_id=`openstack security group list -f value | grep $project_id | cut -d' ' -f 1`
 
 #Image IDs, headnode
-image_id=`openstack image list -f value | grep OL7 | cut -d' ' -f 1`
+image_id=`openstack image list -f value | grep Head | cut -d' ' -f 1`
+image_id_compute=`openstack image list -f value | grep OL7 | cut -d' ' -f 1`
 
 #Image ports, headnode
 port_id=`openstack port list -f value | grep headport | cut -d' ' -f 1`
@@ -4500,7 +4503,7 @@ port_id=`openstack port list -f value | grep headport | cut -d' ' -f 1`
 #Create instances
 # See https://docs.openstack.org/mitaka/install-guide-ubuntu/launch-instance-selfservice.html
 #headnode 
-openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id headnode &
+openstack server create --flavor m1.medium --security-group $security_id --image Head --nic port-id=$port_id headnode &
 
 #Compute Nodes Instances
 #Image id
