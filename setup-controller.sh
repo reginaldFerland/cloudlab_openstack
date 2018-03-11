@@ -4512,7 +4512,7 @@ openstack server create --flavor m1.medium --security-group $security_id --image
 #Compute Nodes Instances
 #Image id
 #glance image-create --name OL7 --disk-format vmdk --visibility public --container-format bare --file /tmp/setup/OL7.vmdk 
-openstack image create --disk-format vmdk --container-format bar --public --file /tmp/setup/OL7.vmdk OL7
+openstack image create --disk-format vmdk --container-format bare --public --file /tmp/setup/OL7.vmdk OL7
 
 image_id=`openstack image list -f value | grep OL7 | cut -d' ' -f 1`
 
