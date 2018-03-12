@@ -4469,8 +4469,9 @@ wget -O /tmp/setup/Head.vmdk https://clemson.box.com/shared/static/rhw7gytt0t3mj
 wget -O /tmp/setup/OL7.vmdk https://clemson.box.com/shared/static/41cef6r8xkigftadqgtkqn0a86xcazis.vmdk
 
 glance image-create --name Head --disk-format vmdk --visibility public --container-format bare --file /tmp/setup/Head.vmdk 
+glance image-create --name OL7 --disk-format vmdk --visibility public --container-format bare --file /tmp/setup/Head.vmdk 
 
-glance image-create --name OL7 --disk-format vmdk --visibility public --container-format bare --file /tmp/setup/Head.vmdk
+#glance image-create --name OL7 --disk-format vmdk --visibility public --container-format bare --file /tmp/setup/Head.vmdk
 
 #Storage image
 
