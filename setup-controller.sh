@@ -4470,7 +4470,7 @@ wget -O /tmp/setup/OL7.vmdk https://clemson.box.com/shared/static/41cef6r8xkigft
 
 glance image-create --name Head --disk-format vmdk --visibility public --container-format bare --file /tmp/setup/Head.vmdk 
 
-glance image-create --name OL7 --disk-format vmdk --visability public --container-format bare --file /tmp/setup/Head.vmdk
+glance image-create --name OL7 --disk-format vmdk --visibility public --container-format bare --file /tmp/setup/Head.vmdk
 
 #Storage image
 
