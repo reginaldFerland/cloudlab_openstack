@@ -4463,14 +4463,14 @@ echo "Your OpenStack instance is downloading image ." \
 # Download images
 # See https://docs.openstack.org/project-install-guide/baremetal/draft/configure-glance-images.html
 #Headnode
-wget -O /tmp/setup/Head.vmdk https://clemson.box.com/shared/static/rhw7gytt0t3mjfpk8t46vgkun36vwpos.vmdk 
+wget -O /tmp/setup/Head.vmdk https://clemson.box.com/shared/static/rhw7gytt0t3mjfpk8t46vgkun36vwpos.vmdk
 
 #Compute image
-wget -O /tmp/setup/OL7.vmdk https://clemson.box.com/shared/static/41cef6r8xkigftadqgtkqn0a86xcazis.vmdk 
+wget -O /tmp/setup/OL7.vmdk https://clemson.box.com/shared/static/41cef6r8xkigftadqgtkqn0a86xcazis.vmdk
 
-glance image-create --name Head --disk-format vmdk --visibility public --container-format bare --file /tmp/setup/Head.vmdk 
+#glance image-create --name Head --disk-format vmdk --visibility public --container-format bare --file /tmp/setup/Head.vmdk 
 
-glance image-create --name OL7 --disk-format vmdk --visibility public --container-format bare --file /tmp/setup/OL7.vmdk 
+glance image-create --name OL7 --disk-format vmdk --visability public --container-format bare --file /tmp/setup/OL7.vmdk
 
 #Storage image
 
@@ -4504,7 +4504,7 @@ port_id=`openstack port list -f value | grep headport | cut -d' ' -f 1`
 #Create instances
 # See https://docs.openstack.org/mitaka/install-guide-ubuntu/launch-instance-selfservice.html
 #headnode 
-openstack server create --flavor m1.medium --security-group $security_id --image Head --nic port-id=$port_id headnode &
+#openstack server create --flavor m1.medium --security-group $security_id --image Head --nic port-id=$port_id headnode &
 
 #Compute Nodes Instances
 #Image id
