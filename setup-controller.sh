@@ -4463,7 +4463,7 @@ echo "Your OpenStack instance is downloading image ." \
 # Download images
 # See https://docs.openstack.org/project-install-guide/baremetal/draft/configure-glance-images.html
 #Headnode
-wget -O /tmp/setup/OL7.vmdk https://clemson.box.com/shared/static/41cef6r8xkigftadqgtkqn0a86xcazis.vmdk
+wget -O /tmp/setup/OL7.vmdk https://clemson.app.box.com/shared/static/kx7zc31gh0ugzu9h9cknt3pdmbpr079o.vmdk 
 glance image-create --name OL7 --disk-format vmdk --visibility public --container-format bare < /tmp/setup/OL7.vmdk 
 
 
@@ -4524,7 +4524,7 @@ openstack server create --flavor m1.medium --security-group $security_id --image
 glance image-delete --name Compute
 
 #Storage image
-wget -O /tmp/setup/Storage.vmdk https://clemson.box.com/shared/static/41cef6r8xkigftadqgtkqn0a86xcazis.vmdk
+wget -O /tmp/setup/Storage.vmdk https://clemson.app.box.com/shared/static/ba7ovgbp1lnii5nbx9jsnvlvbakycidz.vmdk 
 glance image-create --name Storage --disk-format vmdk --visibility public --container-format bare < /tmp/setup/Storage.vmdk 
 
 image_id=`openstack image list -f value | grep Storage | cut -d' ' -f 1`
@@ -4538,7 +4538,6 @@ wait
 
 #Add floating Public IP address to headnode
 floating_ip=`openstack floating ip create public`
-
 
 
 echo "***"
