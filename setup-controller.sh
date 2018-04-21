@@ -4466,9 +4466,6 @@ echo "Your OpenStack instance is downloading image ." \
 wget -O /tmp/setup/OL7.vmdk https://clemson.box.com/shared/static/41cef6r8xkigftadqgtkqn0a86xcazis.vmdk
 glance image-create --name OL7 --disk-format vmdk --visibility public --container-format bare < /tmp/setup/OL7.vmdk 
 
-#Compute image
-
-#Storage image
 
 echo "Your OpenStack instance created image ." \
     |  mail -s "OpenStack Instance update" ${SWAPPER_EMAIL} &
@@ -4504,7 +4501,15 @@ openstack server create --flavor m1.medium --security-group $security_id --image
 
 #Compute Nodes Instances
 #Image id
-image_id=`openstack image list -f value | grep OL7 | cut -d' ' -f 1`
+
+# Delete head to free space
+glance image-delete --name OL7
+
+#Compute image
+wget -O /tmp/setup/Compute.vmdk https://clemson.box.com/shared/static/41cef6r8xkigftadqgtkqn0a86xcazis.vmdk
+glance image-create --name Compute --disk-format vmdk --visibility public --container-format bare < /tmp/setup/Compute.vmdk 
+
+image_id=`openstack image list -f value | grep Compute | cut -d' ' -f 1`
 
 port_id=`openstack port list -f value | grep computeport1 | cut -d' ' -f 1`
 openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id compute001 &
@@ -4514,8 +4519,15 @@ port_id=`openstack port list -f value | grep computeport3 | cut -d' ' -f 1`
 openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id compute003 &
 
 #Storage Nodes
-#Image id
-image_id=`openstack image list -f value | grep OL7 | cut -d' ' -f 1`
+
+# Delete storage to free space
+glance image-delete --name Compute
+
+#Storage image
+wget -O /tmp/setup/Storage.vmdk https://clemson.box.com/shared/static/41cef6r8xkigftadqgtkqn0a86xcazis.vmdk
+glance image-create --name Storage --disk-format vmdk --visibility public --container-format bare < /tmp/setup/Storage.vmdk 
+
+image_id=`openstack image list -f value | grep Storage | cut -d' ' -f 1`
 
 port_id=`openstack port list -f value | grep storageport1 | cut -d' ' -f 1`
 openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id storage001 &
