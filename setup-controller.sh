@@ -4465,7 +4465,7 @@ echo "Your OpenStack instance is downloading image ." \
 #Headnode
 wget -O /tmp/setup/OL7.vmdk https://clemson.app.box.com/shared/static/kx7zc31gh0ugzu9h9cknt3pdmbpr079o.vmdk 
 glance image-create --name OL7 --disk-format vmdk --visibility public --container-format bare < /tmp/setup/OL7.vmdk 
-
+rm /tmp/setup/OL7.vmdk
 
 echo "Your OpenStack instance created image ." \
     |  mail -s "OpenStack Instance update" ${SWAPPER_EMAIL} &
@@ -4508,6 +4508,7 @@ glance image-delete --name OL7
 #Compute image
 wget -O /tmp/setup/Compute.vmdk https://clemson.box.com/shared/static/41cef6r8xkigftadqgtkqn0a86xcazis.vmdk
 glance image-create --name Compute --disk-format vmdk --visibility public --container-format bare < /tmp/setup/Compute.vmdk 
+rm /tmp/setup/Compute.vmdk
 
 image_id=`openstack image list -f value | grep Compute | cut -d' ' -f 1`
 
@@ -4526,6 +4527,7 @@ glance image-delete --name Compute
 #Storage image
 wget -O /tmp/setup/Storage.vmdk https://clemson.app.box.com/shared/static/ba7ovgbp1lnii5nbx9jsnvlvbakycidz.vmdk 
 glance image-create --name Storage --disk-format vmdk --visibility public --container-format bare < /tmp/setup/Storage.vmdk 
+rm /tmp/setup/Storage.vmdk
 
 image_id=`openstack image list -f value | grep Storage | cut -d' ' -f 1`
 
