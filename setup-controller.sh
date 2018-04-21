@@ -4513,11 +4513,11 @@ rm /tmp/setup/Compute.vmdk
 image_id=`openstack image list -f value | grep Compute | cut -d' ' -f 1`
 
 port_id=`openstack port list -f value | grep computeport1 | cut -d' ' -f 1`
-openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id compute001 &
+openstack server create --flavor m1.medium --security-group $security_id --image Compute --nic port-id=$port_id compute001 &
 port_id=`openstack port list -f value | grep computeport2 | cut -d' ' -f 1`
-openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id compute002 &
+openstack server create --flavor m1.medium --security-group $security_id --image Compute --nic port-id=$port_id compute002 &
 port_id=`openstack port list -f value | grep computeport3 | cut -d' ' -f 1`
-openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id compute003 &
+openstack server create --flavor m1.medium --security-group $security_id --image Compute --nic port-id=$port_id compute003 &
 
 #Storage Nodes
 
@@ -4532,9 +4532,9 @@ rm /tmp/setup/Storage.vmdk
 image_id=`openstack image list -f value | grep Storage | cut -d' ' -f 1`
 
 port_id=`openstack port list -f value | grep storageport1 | cut -d' ' -f 1`
-openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id storage001 &
+openstack server create --flavor m1.medium --security-group $security_id --image Storage --nic port-id=$port_id storage001 &
 port_id=`openstack port list -f value | grep storageport2 | cut -d' ' -f 1`
-openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id storage001 &
+openstack server create --flavor m1.medium --security-group $security_id --image Storage --nic port-id=$port_id storage001 &
 
 wait
 
