@@ -8,7 +8,7 @@ wget http://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e/epel-release-7-11.
 rpm -Uvh epel-release*rpm
 
 yum update -y
-yum -y install gcc flex bison openssl-devel libdb4-devel kernel-devel perl make kernel-headers zip openssl automake autoconf patch gcc-c++ openldap openldap-devel kernel-uek-devel-`uname -r`
+yum -y install gcc flex bison openssl-devel libdb4-devel kernel-devel perl make kernel-headers zip openssl automake autoconf patch gcc-c++ openldap openldap-devel kernel-uek-devel-`uname -r` libattr-devel
  
 ./configure --prefix=/opt/orangefs --with-kernel=/lib/modules/`uname -
 r`/build
@@ -19,5 +19,5 @@ make kmod
 make kmod_prefix=/opt/orangefs kmod_install
 
 /opt/orangefs/bin/pvfs2-genconfig /opt/orangefs/etc/orangefs-server.conf
-#/opt/orangefs/sbin/pvfs2-server -f -a master /opt/orangefs/etc/orangefs-server.conf
-#/opt/orangefs/sbin/pvfs2-server -a master /opt/orangefs/etc/orangefs-server.conf
+/opt/orangefs/sbin/pvfs2-server -f -a master /opt/orangefs/etc/orangefs-server.conf
+/opt/orangefs/sbin/pvfs2-server -a master /opt/orangefs/etc/orangefs-server.conf
