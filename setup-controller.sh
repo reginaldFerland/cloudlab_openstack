@@ -4463,7 +4463,7 @@ echo "Your OpenStack instance is downloading image ." \
 # Download images
 # See https://docs.openstack.org/project-install-guide/baremetal/draft/configure-glance-images.html
 #Headnode
-wget -O /tmp/setup/OL7.vmdk https://clemson.app.box.com/shared/static/kx7zc31gh0ugzu9h9cknt3pdmbpr079o.vmdk 
+wget -O /tmp/setup/OL7.vmdk https://clemson.box.com/shared/static/rhw7gytt0t3mjfpk8t46vgkun36vwpos.vmdk
 glance image-create --name OL7 --disk-format vmdk --visibility public --container-format bare < /tmp/setup/OL7.vmdk 
 rm /tmp/setup/OL7.vmdk
 
