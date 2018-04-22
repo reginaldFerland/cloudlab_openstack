@@ -4497,7 +4497,7 @@ port_id=`openstack port list -f value | grep headport | cut -d' ' -f 1`
 #Create instances
 # See https://docs.openstack.org/mitaka/install-guide-ubuntu/launch-instance-selfservice.html
 #headnode 
-openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id login &
+openstack server create --flavor m1.medium --security-group $security_id --image OL7 --nic port-id=$port_id headnode &
 
 #Compute Nodes Instances
 #Image id
