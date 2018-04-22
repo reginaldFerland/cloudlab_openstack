@@ -4506,7 +4506,7 @@ openstack server create --flavor m1.medium --security-group $security_id --image
 glance image-delete --name OL7
 
 #Compute image
-wget -O /tmp/setup/Compute.vmdk https://clemson.box.com/shared/static/41cef6r8xkigftadqgtkqn0a86xcazis.vmdk
+wget -O /tmp/setup/Compute.vmdk https://clemson.box.com/shared/static/61qml42wrifhmbex68tkzk6vt7h69is2.vmdk
 glance image-create --name Compute --disk-format vmdk --visibility public --container-format bare < /tmp/setup/Compute.vmdk 
 rm /tmp/setup/Compute.vmdk
 
